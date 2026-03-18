@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "summary": {
+      "type": "string"
+    },
+    "overall_risk": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "asset_type": {
+            "type": "string"
+          },
+          "asset_name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "risky",
+              "block"
+            ]
+          },
+          "issue": {
+            "type": "string"
+          },
+          "why_risky": {
+            "type": "string"
+          },
+          "suggested_fix": {
+            "type": "string"
+          },
+          "source_policy": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "asset_type",
+          "asset_name",
+          "status",
+          "issue",
+          "why_risky",
+          "suggested_fix",
+          "source_policy"
+        ]
+      }
+    },
+    "proof_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "summary",
+    "overall_risk",
+    "items",
+    "proof_requirements"
+  ]
+}

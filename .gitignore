@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+.pytest_cache/
+.coverage
+.DS_Store
+
+# Local Codex / auth
+.codex/auth.json
+.codex/history.jsonl
+
+# Generated corpora and outputs
+data/raw/*
+!data/raw/.gitkeep
+data/intermediate/*
+!data/intermediate/.gitkeep
+data/avatar_states/*
+data/threads/md/*
+!data/threads/md/.gitkeep
+data/threads/orphans_md/*
+data/threads/*.jsonl
+data/threads/*.csv
+data/packs/*
+!data/packs/.gitkeep
+data/evidence/*
+!data/evidence/.gitkeep
+outputs/*
+!outputs/.gitkeep
+!outputs/avatar_dossier.md
+!outputs/avatar_profile.json
+!outputs/reports/
+!outputs/reports/jaw_clenching_nighttime_spike/
+outputs/reports/jaw_clenching_nighttime_spike/*
+!outputs/reports/jaw_clenching_nighttime_spike/jaw_clenching_nighttime_spike_report.md
+!outputs/reports/jaw_clenching_nighttime_spike/jaw_clenching_nighttime_spike_report.pdf

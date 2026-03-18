@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "thread_id": {
+          "type": "string"
+        },
+        "submission_id": {
+          "type": "string"
+        },
+        "comment_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "subreddit": {
+          "type": "string"
+        },
+        "quote": {
+          "type": "string"
+        },
+        "why_it_supports": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "thread_id",
+        "submission_id",
+        "comment_id",
+        "subreddit",
+        "quote",
+        "why_it_supports"
+      ]
+    },
+    "ad_angle": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "angle_name": {
+          "type": "string"
+        },
+        "hook": {
+          "type": "string"
+        },
+        "pattern_interrupt": {
+          "type": "string"
+        },
+        "emotional_job": {
+          "type": "string"
+        },
+        "proof_device": {
+          "type": "string"
+        },
+        "cta": {
+          "type": "string"
+        },
+        "awareness_fit": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
+        },
+        "meta_policy_risk": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "safer_rewrite_if_risky": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "angle_name",
+        "hook",
+        "pattern_interrupt",
+        "emotional_job",
+        "proof_device",
+        "cta",
+        "awareness_fit",
+        "confidence",
+        "evidence",
+        "meta_policy_risk",
+        "safer_rewrite_if_risky"
+      ]
+    }
+  },
+  "properties": {
+    "avatar_name": {
+      "type": "string"
+    },
+    "ad_angles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ad_angle"
+      }
+    },
+    "gaps_and_unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "avatar_name",
+    "ad_angles",
+    "gaps_and_unknowns"
+  ]
+}

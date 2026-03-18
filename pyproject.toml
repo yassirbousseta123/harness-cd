@@ -1,0 +1,18 @@
+[project]
+name = "tinnitus-codex-harness"
+version = "0.1.0"
+description = "Codex CLI harness for Arctic Shift Reddit corpus research"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "zstandard>=0.22.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

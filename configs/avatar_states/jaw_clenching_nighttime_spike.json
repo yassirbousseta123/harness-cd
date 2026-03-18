@@ -1,0 +1,169 @@
+{
+  "avatar_id": "jaw_clenching_nighttime_spike",
+  "label": "Jaw-Clenching / Night-Guard / Nighttime Spike",
+  "description": "Beachhead tinnitus avatar modeled as a recurring state cluster: nighttime ringing, jaw tension or clenching, quiet-room amplification, sleep dread, night-guard confusion, and mechanism-hungry self-diagnosis.",
+  "min_core_score": 5.5,
+  "min_core_states": 2,
+  "priority_min_core_score": 8.0,
+  "priority_core_state_groups": [
+    [
+      "jaw_tension_clenching",
+      "jaw_modulation_mechanical_link",
+      "night_guard_confusion"
+    ],
+    [
+      "nighttime_spike_sleep_dread",
+      "quiet_room_amplification"
+    ]
+  ],
+  "core_states": [
+    {
+      "id": "jaw_tension_clenching",
+      "label": "Jaw Tension / Clenching",
+      "weight": 3.0,
+      "patterns": [
+        "\\bclench(?:ing|ed|es)?\\b",
+        "\\bgrind(?:ing|er|ers)?\\b",
+        "\\bbruxism\\b",
+        "\\bTMJ\\b",
+        "\\bmasseter\\b",
+        "\\b(?:jaw|temple|neck) (?:pain|ache|aching|tight|tense|stiff|sore|pressure|fatigue)\\b",
+        "\\bsore,? stiff jaw\\b"
+      ]
+    },
+    {
+      "id": "nighttime_spike_sleep_dread",
+      "label": "Nighttime Spike / Sleep Dread",
+      "weight": 3.0,
+      "patterns": [
+        "\\bwoke? up\\b",
+        "\\bwaking up\\b",
+        "\\btrying to sleep\\b",
+        "\\bbedtime\\b",
+        "\\blaying down\\b",
+        "\\blying down\\b",
+        "\\bpillow\\b",
+        "\\bsleep with white noise\\b",
+        "\\bmultiple times each night\\b",
+        "\\bnightmare\\b"
+      ]
+    },
+    {
+      "id": "quiet_room_amplification",
+      "label": "Quiet-Room Amplification",
+      "weight": 2.5,
+      "patterns": [
+        "\\bquiet room\\b",
+        "\\bquiet office\\b",
+        "\\bin a quiet room\\b",
+        "\\bwhen the room goes quiet\\b",
+        "\\bsilence\\b",
+        "\\bvery quiet\\b"
+      ]
+    },
+    {
+      "id": "jaw_modulation_mechanical_link",
+      "label": "Jaw Modulation / Mechanical Link Belief",
+      "weight": 3.0,
+      "patterns": [
+        "\\bflex(?:ing)? my jaw\\b",
+        "\\bmove my jaw\\b",
+        "\\bbite down\\b",
+        "\\bopen wide\\b",
+        "\\bchanges? (?:the )?(?:tone|pitch|volume|intensity)\\b",
+        "\\bsomatic tinnitus\\b",
+        "\\bphysical root cause\\b",
+        "\\broof of mouth\\b",
+        "\\bpress on.*neck\\b"
+      ]
+    },
+    {
+      "id": "night_guard_confusion",
+      "label": "Night-Guard Confusion",
+      "weight": 2.5,
+      "patterns": [
+        "\\bnight guard\\b",
+        "\\bmouth guard\\b",
+        "\\bcustom guard\\b",
+        "\\bsplint\\b",
+        "\\boral appliance\\b",
+        "\\bboil-and-bite\\b"
+      ]
+    }
+  ],
+  "adjacent_states": [
+    {
+      "id": "paper_normal_still_miserable",
+      "label": "Paper-Normal Still Miserable",
+      "weight": 1.5,
+      "patterns": [
+        "\\bnormal hearing\\b",
+        "\\bhearing test\\b",
+        "\\baudiogram\\b",
+        "\\bhearing is normal\\b",
+        "\\bhearing is fine\\b"
+      ]
+    },
+    {
+      "id": "ent_dismissal",
+      "label": "ENT Dismissal",
+      "weight": 1.25,
+      "patterns": [
+        "\\bENT\\b",
+        "\\blearn to live with it\\b",
+        "\\bwhite noise\\b",
+        "\\bjust cope\\b",
+        "\\bno real plan\\b"
+      ]
+    },
+    {
+      "id": "ear_fullness_pressure",
+      "label": "Ear Fullness / Pressure",
+      "weight": 1.25,
+      "patterns": [
+        "\\bear fullness\\b",
+        "\\bear would feel full\\b",
+        "\\bphysically feel different\\b",
+        "\\bclicking\\b",
+        "\\bpressure\\b"
+      ]
+    },
+    {
+      "id": "stress_loop",
+      "label": "Stress Loop",
+      "weight": 1.25,
+      "patterns": [
+        "\\bstress(?:ing)? me out\\b",
+        "\\bstress makes\\b",
+        "\\banxiety\\b",
+        "\\bpanic\\b",
+        "\\bkind of losing it\\b"
+      ]
+    },
+    {
+      "id": "bite_change_dental_trigger",
+      "label": "Bite Change / Dental Trigger",
+      "weight": 1.0,
+      "patterns": [
+        "\\bchanging the bite\\b",
+        "\\bbite\\b",
+        "\\bwisdom tooth\\b",
+        "\\bdentist\\b",
+        "\\bfilling\\b",
+        "\\baligner\\b"
+      ]
+    },
+    {
+      "id": "temporary_fix_burnout",
+      "label": "Temporary Fix Burnout",
+      "weight": 1.0,
+      "patterns": [
+        "\\btemporary fix\\b",
+        "\\bstill stuck with the noise\\b",
+        "\\bat my wits end\\b",
+        "\\beverything I've tried\\b",
+        "\\bonly helps temporarily\\b"
+      ]
+    }
+  ]
+}
