@@ -89,22 +89,13 @@ Current honest counts:
 
 ## Current Deliverable Status
 
-Current deliverables:
-
-- `outputs/avatar_dossier.md`
-- `outputs/avatar_profile.json`
-- `outputs/reports/jaw_clenching_nighttime_spike/jaw_clenching_nighttime_spike_report.pdf`
+The repo has been reset to remove stale legacy deliverables that were created before the founder-memory rebuild.
 
 Important:
 
-- the current PDF is evidence-backed
-- the current PDF is scalable
-- the current PDF is not yet a true exhaustive deep-dive over all `712` priority threads
-
-That means:
-
-- as a harness / workflow artifact: useful
-- as a final founder-grade DR avatar deep dive: incomplete
+- old committed dossier/profile/PDF artifacts were intentionally removed
+- current truth should come from the active local workspace plus founder-memory state
+- a founder-grade report should only reappear after thread cards and pattern ledger coverage exist
 
 ## Founder-Grade Rebuild Path
 
@@ -128,8 +119,8 @@ That rebuild changes the intended order to:
 
 So the repo should now be read as:
 
-- current committed PDF: still partial
-- forward architecture: materially better aligned with founder-grade deep reading
+- committed architecture: materially better aligned with founder-grade deep reading
+- committed research output: intentionally reset so stale artifacts do not masquerade as finished work
 
 ## Known Gap
 

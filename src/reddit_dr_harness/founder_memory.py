@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
+import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -39,6 +41,14 @@ def write_json(path: str | Path, payload: dict[str, Any]) -> None:
 def load_priority_manifest(path: str | Path) -> list[dict[str, str]]:
     with Path(path).open("r", encoding="utf-8", newline="") as fh:
         return list(csv.DictReader(fh))
+
+
+def file_sha256(path: str | Path) -> str:
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as fh:
+        for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def _quality_label(processed_total: int, remaining: int) -> str:
@@ -95,6 +105,7 @@ def build_report_state(
     workspace_root: str | None = None,
     priority_manifest_path: str | None = None,
     compiled_body_path: str | None = None,
+    workspace_signature: str | None = None,
 ) -> dict[str, Any]:
     existing = existing_state or {}
     priority_ids = [row.get("thread_id") or "" for row in priority_rows if row.get("thread_id")]
@@ -103,6 +114,9 @@ def build_report_state(
     processed_total = len(processed_ids)
     remaining = max(len(priority_ids) - processed_total, 0)
     next_batch = _next_priority_batch(priority_rows, set(processed_ids), limit=batch_size)
+    notes = list(existing.get("notes", []))
+    if existing.get("workspace_signature") and workspace_signature and existing.get("workspace_signature") != workspace_signature:
+        notes.append("Workspace signature changed; processed queue was trimmed to currently valid priority thread IDs.")
     return {
         "avatar_id": avatar_id,
         "report_quality_label": _quality_label(processed_total, remaining),
@@ -114,7 +128,7 @@ def build_report_state(
         "next_priority_batch": next_batch,
         "updated_files": list(existing.get("updated_files", [])),
         "notable_new_patterns": list(existing.get("notable_new_patterns", [])),
-        "notes": list(existing.get("notes", [])),
+        "notes": notes,
         "last_batch_processed_at": existing.get("last_batch_processed_at"),
         "last_refreshed_at": utc_now_iso(),
         "dossier_version": int(existing.get("dossier_version", 0)),
@@ -124,6 +138,7 @@ def build_report_state(
         "workspace_root": workspace_root,
         "priority_manifest_path": priority_manifest_path,
         "compiled_body_path": compiled_body_path,
+        "workspace_signature": workspace_signature,
     }
 
 
@@ -136,6 +151,7 @@ def load_or_init_report_state(
     workspace_root: str | None = None,
     priority_manifest_path: str | None = None,
     compiled_body_path: str | None = None,
+    workspace_signature: str | None = None,
 ) -> dict[str, Any]:
     state_path = Path(path)
     existing = read_json(state_path) if state_path.exists() else {}
@@ -147,6 +163,7 @@ def load_or_init_report_state(
         workspace_root=workspace_root,
         priority_manifest_path=priority_manifest_path,
         compiled_body_path=compiled_body_path,
+        workspace_signature=workspace_signature,
     )
 
 
@@ -307,3 +324,47 @@ def render_priority_batch_markdown(batch: list[dict[str, Any]], *, avatar_id: st
         lines.append(f"- `{item.get('thread_id')}` | score `{score_text}` | {item.get('title')}")
     lines.append("")
     return "\n".join(lines)
+
+
+def remove_path(path: str | Path) -> bool:
+    target = Path(path)
+    if not target.exists():
+        return False
+    if target.is_dir():
+        shutil.rmtree(target)
+    else:
+        target.unlink()
+    return True
+
+
+def clear_generated_dir(path: str | Path, *, keep_gitkeep: bool = True) -> list[str]:
+    target = Path(path)
+    if not target.exists():
+        return []
+    removed: list[str] = []
+    for child in target.iterdir():
+        if keep_gitkeep and child.name == ".gitkeep":
+            continue
+        if child.is_dir():
+            shutil.rmtree(child)
+        else:
+            child.unlink()
+        removed.append(str(child))
+    return removed
+
+
+def prune_thread_card_files(thread_cards_dir: str | Path, *, valid_thread_ids: set[str], reset: bool = False) -> list[str]:
+    root = Path(thread_cards_dir)
+    root.mkdir(parents=True, exist_ok=True)
+    removed: list[str] = []
+    for child in root.iterdir():
+        if child.name == ".gitkeep":
+            continue
+        stem = child.stem
+        if reset or stem not in valid_thread_ids:
+            if child.is_dir():
+                shutil.rmtree(child)
+            else:
+                child.unlink()
+            removed.append(str(child))
+    return removed

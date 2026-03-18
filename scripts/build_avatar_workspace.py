@@ -25,6 +25,7 @@ from update_research_corpus import (
 )
 from reddit_dr_harness.avatar_state import build_avatar_slice, load_avatar_config, load_threads_from_paths, write_avatar_slice
 from reddit_dr_harness.corpus_metrics import summarize_current_corpus
+from reddit_dr_harness.founder_memory import file_sha256, remove_path
 from reddit_dr_harness.ingest import dedupe_comments, dedupe_submissions, load_comments, load_submissions, write_sqlite, write_threads_artifacts
 from reddit_dr_harness.quotes import extract_quote_candidates
 
@@ -45,6 +46,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--workspace-root", default="data/avatar_states", help="Root directory for avatar-specific slices.")
     parser.add_argument("--allow-changed", action="store_true", help="Rebuild if existing raw pairs changed.")
     parser.add_argument("--force", action="store_true", help="Rebuild even if registry says nothing changed.")
+    parser.add_argument("--clean-workspace", action="store_true", help="Delete generated avatar workspace artifacts before rebuilding the slice.")
     parser.add_argument("--packs-max-threads", type=int, default=20, help="Maximum threads per avatar pack.")
     parser.add_argument("--packs-max-chars", type=int, default=120000, help="Maximum characters per avatar pack.")
     parser.add_argument("--packs-max-comments-per-thread", type=int, default=80, help="Maximum comments per thread in avatar packs.")
@@ -52,6 +54,24 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--priority-packs-max-chars", type=int, default=45000, help="Maximum characters per priority pack.")
     parser.add_argument("--priority-packs-max-comments-per-thread", type=int, default=160, help="Maximum comments per thread in priority packs.")
     return parser
+
+
+def clean_avatar_workspace(workspace_root: Path) -> None:
+    for dirname in ("packs", "priority_packs"):
+        remove_path(workspace_root / dirname)
+    for filename in (
+        "threads.jsonl",
+        "thread_index.csv",
+        "report.json",
+        "priority_threads.jsonl",
+        "priority_thread_index.csv",
+        "priority_report.json",
+        "pack_manifest.csv",
+        "priority_pack_manifest.csv",
+        "workspace_summary.json",
+        "seed_corpus.csv",
+    ):
+        remove_path(workspace_root / filename)
 
 
 def ensure_canonical_corpus(args: argparse.Namespace) -> dict[str, int]:
@@ -135,6 +155,8 @@ def main() -> int:
     avatar_id = config["avatar_id"]
     workspace_root = Path(args.workspace_root) / avatar_id
     workspace_root.mkdir(parents=True, exist_ok=True)
+    if args.clean_workspace:
+        clean_avatar_workspace(workspace_root)
 
     corpus_summary = ensure_canonical_corpus(args)
 
@@ -216,6 +238,7 @@ def main() -> int:
         "avatar_id": avatar_id,
         "label": config.get("label"),
         "workspace_root": str(workspace_root),
+        "workspace_signature": file_sha256(priority_manifest_path),
         "canonical_threads_path": args.threads_jsonl,
         "canonical_orphan_threads_path": str(Path(args.threads_jsonl).with_name("orphan_threads.jsonl")),
         "quote_candidates_path": args.quotes_out,
@@ -232,6 +255,7 @@ def main() -> int:
         "matched_threads": len(matched_threads),
         "priority_threads": len(priority_threads),
         "seed_corpus_path": str(seed_copy_path) if seed_copy_path else None,
+        "matched_by_subreddit": report.get("matched_by_subreddit", {}),
         "corpus_summary": corpus_summary,
     }
     (workspace_root / "workspace_summary.json").write_text(

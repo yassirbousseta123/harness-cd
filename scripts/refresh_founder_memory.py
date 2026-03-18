@@ -12,12 +12,16 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from reddit_dr_harness.founder_memory import (
+    clear_generated_dir,
     compile_sections_to_markdown,
+    file_sha256,
     ensure_section_files,
     load_or_init_pattern_ledger,
     load_or_init_report_state,
     load_priority_manifest,
+    prune_thread_card_files,
     read_json,
+    remove_path,
     render_pattern_ledger_markdown,
     render_priority_batch_markdown,
     write_json,
@@ -37,6 +41,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Founder-grade section template path.",
     )
     parser.add_argument("--batch-size", type=int, default=5, help="Unread priority threads to queue per batch.")
+    parser.add_argument("--reset-generated", action="store_true", help="Delete stale generated founder-memory artifacts before rebuilding state.")
     return parser
 
 
@@ -55,9 +60,24 @@ def main() -> int:
 
     priority_manifest_path = workspace / "priority_thread_index.csv"
     priority_rows = load_priority_manifest(priority_manifest_path)
+    workspace_signature = file_sha256(priority_manifest_path)
+    valid_thread_ids = {row.get("thread_id") or "" for row in priority_rows if row.get("thread_id")}
 
     founder_body_path = outputs_root / "founder_report_body.md"
     report_state_path = outputs_root / "report_state.json"
+    ledger_path = outputs_root / "pattern_ledger.json"
+    if args.reset_generated:
+        remove_path(report_state_path)
+        remove_path(ledger_path)
+        remove_path(outputs_root / "pattern_ledger.md")
+        remove_path(outputs_root / "current_priority_batch.json")
+        remove_path(outputs_root / "current_priority_batch.md")
+        remove_path(founder_body_path)
+        clear_generated_dir(report_sections_dir)
+        prune_thread_card_files(thread_cards_dir, valid_thread_ids=valid_thread_ids, reset=True)
+    else:
+        prune_thread_card_files(thread_cards_dir, valid_thread_ids=valid_thread_ids, reset=False)
+
     report_state = load_or_init_report_state(
         path=report_state_path,
         avatar_id=avatar_id,
@@ -66,10 +86,10 @@ def main() -> int:
         workspace_root=str(workspace),
         priority_manifest_path=str(priority_manifest_path),
         compiled_body_path=str(founder_body_path),
+        workspace_signature=workspace_signature,
     )
     write_json(report_state_path, report_state)
 
-    ledger_path = outputs_root / "pattern_ledger.json"
     ledger = load_or_init_pattern_ledger(
         path=ledger_path,
         avatar_id=avatar_id,

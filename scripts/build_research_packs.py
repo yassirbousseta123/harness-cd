@@ -45,6 +45,8 @@ def build_packs(
 ) -> list[dict[str, object]]:
     out_dir_path = Path(out_dir)
     out_dir_path.mkdir(parents=True, exist_ok=True)
+    for stale_pack in sorted(out_dir_path.glob("pack_*.md")):
+        stale_pack.unlink()
 
     manifest_file = Path(manifest_path)
     manifest_file.parent.mkdir(parents=True, exist_ok=True)

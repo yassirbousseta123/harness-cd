@@ -49,6 +49,8 @@
     "workspace_root": {"type": ["string", "null"]},
     "priority_manifest_path": {"type": ["string", "null"]},
     "compiled_body_path": {"type": ["string", "null"]}
+    ,
+    "workspace_signature": {"type": ["string", "null"]}
   },
   "additionalProperties": false
 }

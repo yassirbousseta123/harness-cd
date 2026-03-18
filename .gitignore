@@ -28,16 +28,9 @@ data/evidence/*
 !data/evidence/.gitkeep
 outputs/*
 !outputs/.gitkeep
-!outputs/avatar_dossier.md
-!outputs/avatar_profile.json
 !outputs/thread_cards/
 outputs/thread_cards/*
 !outputs/thread_cards/.gitkeep
 !outputs/report_sections/
 outputs/report_sections/*
 !outputs/report_sections/.gitkeep
-!outputs/reports/
-!outputs/reports/jaw_clenching_nighttime_spike/
-outputs/reports/jaw_clenching_nighttime_spike/*
-!outputs/reports/jaw_clenching_nighttime_spike/jaw_clenching_nighttime_spike_report.md
-!outputs/reports/jaw_clenching_nighttime_spike/jaw_clenching_nighttime_spike_report.pdf

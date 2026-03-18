@@ -23,24 +23,18 @@ The point is simple: let Codex do the reasoning, but force the data prep and evi
 If you are reviewing the current workflow and deliverables first, start here:
 
 - workflow note: `docs/reviewer-workflow.md`
-- current long-form dossier: `outputs/avatar_dossier.md`
-- current structured profile: `outputs/avatar_profile.json`
-- current report PDF: `outputs/reports/jaw_clenching_nighttime_spike/jaw_clenching_nighttime_spike_report.pdf`
+- founder-memory workflow: `docs/founder-grade-memory-workflow.md`
 
 Important reviewer note:
 
-- the harness / corpus-prep layer is stronger than the current manual deep-dive layer
-- current system-scored avatar counts are much larger than the manually context-read thread set
-- current PDF is useful for workflow review, but should not be mistaken for a fully exhaustive founder-grade deep-dive over all priority threads
-- the repo now ships a founder-grade memory workflow so future runs build from thread cards + pattern ledger, not from representative-slice synthesis
+- legacy synthesis artifacts were removed during the fresh reset
+- committed repo now starts from the new founder-memory architecture, not from a stale PDF/dossier pair
+- current research status should be read from `outputs/report_state.json` locally after a refresh run, not from old checked-in outputs
 
 Current honest read depth for the committed report set:
 
-- threads scored by system: `24,328`
-- broad matched slice: `2,797`
-- priority slice: `712`
-- manually context-read for the current synthesis: `16`
-- unique threads cited in structured evidence: `13`
+- canonical corpus and workspace are generated locally
+- founder-memory state starts at `mapping-only` until real thread cards are created
 
 ## What this harness expects
 
