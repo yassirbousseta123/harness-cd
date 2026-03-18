@@ -48,6 +48,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--packs-max-threads", type=int, default=20, help="Maximum threads per avatar pack.")
     parser.add_argument("--packs-max-chars", type=int, default=120000, help="Maximum characters per avatar pack.")
     parser.add_argument("--packs-max-comments-per-thread", type=int, default=80, help="Maximum comments per thread in avatar packs.")
+    parser.add_argument("--priority-packs-max-threads", type=int, default=5, help="Maximum threads per priority pack.")
+    parser.add_argument("--priority-packs-max-chars", type=int, default=45000, help="Maximum characters per priority pack.")
+    parser.add_argument("--priority-packs-max-comments-per-thread", type=int, default=160, help="Maximum comments per thread in priority packs.")
     return parser
 
 
@@ -199,9 +202,9 @@ def main() -> int:
         priority_threads,
         out_dir=priority_packs_dir,
         manifest_path=priority_pack_manifest_path,
-        max_threads=args.packs_max_threads,
-        max_chars=args.packs_max_chars,
-        max_comments_per_thread=args.packs_max_comments_per_thread,
+        max_threads=args.priority_packs_max_threads,
+        max_chars=args.priority_packs_max_chars,
+        max_comments_per_thread=args.priority_packs_max_comments_per_thread,
     )
 
     seed_copy_path = None

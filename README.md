@@ -32,6 +32,7 @@ Important reviewer note:
 - the harness / corpus-prep layer is stronger than the current manual deep-dive layer
 - current system-scored avatar counts are much larger than the manually context-read thread set
 - current PDF is useful for workflow review, but should not be mistaken for a fully exhaustive founder-grade deep-dive over all priority threads
+- the repo now ships a founder-grade memory workflow so future runs build from thread cards + pattern ledger, not from representative-slice synthesis
 
 Current honest read depth for the committed report set:
 
@@ -171,15 +172,45 @@ This will:
 - build a sharper priority slice
 - build reading packs for both
 
-### 5c) Render the research report to PDF
+Priority packs now default to smaller deep-reading units:
 
-Once the deep research markdown exists, render the report wrapper plus the long-form body:
+- `--priority-packs-max-threads 5`
+- `--priority-packs-max-chars 45000`
+- `--priority-packs-max-comments-per-thread 160`
+
+### 5c) Refresh founder-memory artifacts
+
+This is the new bridge layer between the workspace and the final dossier:
+
+```bash
+python scripts/refresh_founder_memory.py \
+  --workspace data/avatar_states/jaw_clenching_nighttime_spike \
+  --config configs/avatar_states/jaw_clenching_nighttime_spike.json
+```
+
+It creates or refreshes:
+
+- `outputs/report_state.json`
+- `outputs/current_priority_batch.json`
+- `outputs/current_priority_batch.md`
+- `outputs/thread_cards/`
+- `outputs/pattern_ledger.json`
+- `outputs/pattern_ledger.md`
+- `outputs/report_sections/`
+- `outputs/founder_report_body.md`
+
+### 5d) Render the research report to PDF
+
+Once report sections or a finished body exist, render the report wrapper plus the long-form body:
 
 ```bash
 python scripts/build_avatar_report.py \
   --workspace data/avatar_states/jaw_clenching_nighttime_spike \
   --config configs/avatar_states/jaw_clenching_nighttime_spike.json \
-  --body-markdown outputs/avatar_dossier.md
+  --sections-dir outputs/report_sections \
+  --report-state outputs/report_state.json \
+  --pattern-ledger outputs/pattern_ledger.json \
+  --compiled-body-out outputs/founder_report_body.md
 ```
 
 Outputs:
@@ -208,6 +239,8 @@ bash bin/ad-angle-bank.sh
 bash bin/compliance-audit.sh
 ```
 
+`bash bin/avatar-dossier.sh` now treats `outputs/report_state.json` as the structured status output for the founder-grade run. The dossier/profile remain side effects of the memory-first workflow.
+
 ## Core workflows
 
 ### A. Corpus build
@@ -223,11 +256,13 @@ bash bin/compliance-audit.sh
 - `scripts/validate_evidence_refs.py`
 - `scripts/build_avatar_state_slice.py`
 - `scripts/build_avatar_workspace.py`
+- `scripts/refresh_founder_memory.py`
 - `scripts/build_avatar_report.py`
 
 ### C. Codex synthesis
 
 - `prompts/avatar_dossier.prompt.md`
+- `prompts/founder_grade_run_prompt.md`
 - `prompts/mechanism_lab.prompt.md`
 - `prompts/lander_angles.prompt.md`
 - `prompts/ad_angle_bank.prompt.md`
@@ -236,6 +271,9 @@ bash bin/compliance-audit.sh
 ### D. Structured outputs
 
 - `schemas/avatar_profile.schema.json`
+- `schemas/thread_card.schema.json`
+- `schemas/pattern_ledger.schema.json`
+- `schemas/report_state.schema.json`
 - `schemas/mechanism_hypotheses.schema.json`
 - `schemas/lander_angle_bank.schema.json`
 - `schemas/ad_angle_bank.schema.json`
@@ -258,6 +296,9 @@ Project-scoped agents under `.codex/agents/`:
 - `corpus_mapper`
 - `quote_analyst`
 - `claim_auditor`
+- `thread_reader`
+- `pattern_librarian`
+- `report_editor`
 
 Use them when a task is parallelizable. Example:
 

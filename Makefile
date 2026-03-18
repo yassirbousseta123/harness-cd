@@ -1,7 +1,7 @@
 PYTHON ?= python
 ROOT := $(CURDIR)
 
-.PHONY: setup test ingest update-corpus quotes packs avatar-slice avatar-workspace avatar-report avatar mechanisms landers ads audit
+.PHONY: setup test ingest update-corpus quotes packs avatar-slice avatar-workspace founder-memory avatar-report avatar mechanisms landers ads audit
 
 setup:
 	$(PYTHON) -m pip install -e ".[dev]"
@@ -49,10 +49,19 @@ avatar-workspace:
 	$(PYTHON) scripts/build_avatar_workspace.py \
 		--config configs/avatar_states/jaw_clenching_nighttime_spike.json
 
+founder-memory:
+	$(PYTHON) scripts/refresh_founder_memory.py \
+		--workspace data/avatar_states/jaw_clenching_nighttime_spike \
+		--config configs/avatar_states/jaw_clenching_nighttime_spike.json
+
 avatar-report:
 	$(PYTHON) scripts/build_avatar_report.py \
 		--workspace data/avatar_states/jaw_clenching_nighttime_spike \
-		--config configs/avatar_states/jaw_clenching_nighttime_spike.json
+		--config configs/avatar_states/jaw_clenching_nighttime_spike.json \
+		--sections-dir outputs/report_sections \
+		--report-state outputs/report_state.json \
+		--pattern-ledger outputs/pattern_ledger.json \
+		--compiled-body-out outputs/founder_report_body.md
 
 avatar:
 	bash bin/avatar-dossier.sh

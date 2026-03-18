@@ -15,6 +15,12 @@ It separates:
 - manual thread reading
 - final synthesis
 
+It now also documents the founder-grade rebuild path:
+- priority queue
+- thread cards
+- pattern ledger
+- section-by-section report writing
+
 ## What The Harness Does Well
 
 The harness is strong at:
@@ -99,6 +105,31 @@ That means:
 
 - as a harness / workflow artifact: useful
 - as a final founder-grade DR avatar deep dive: incomplete
+
+## Founder-Grade Rebuild Path
+
+The repo now includes the stronger forward path:
+
+- `docs/founder-grade-memory-workflow.md`
+- `scripts/refresh_founder_memory.py`
+- `outputs/thread_cards/`
+- `outputs/pattern_ledger.*`
+- `outputs/report_sections/`
+- `outputs/report_state.json`
+
+That rebuild changes the intended order to:
+
+1. workspace
+2. unread priority queue
+3. thread cards
+4. pattern ledger
+5. report sections
+6. dossier/profile/PDF
+
+So the repo should now be read as:
+
+- current committed PDF: still partial
+- forward architecture: materially better aligned with founder-grade deep reading
 
 ## Known Gap
 

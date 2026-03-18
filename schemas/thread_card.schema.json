@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ThreadCard",
+  "type": "object",
+  "required": [
+    "thread_id",
+    "title",
+    "subreddit",
+    "thread_strength",
+    "why_this_thread_matters",
+    "primary_states",
+    "trigger_moments",
+    "what_makes_it_worse",
+    "mechanism_beliefs",
+    "tried_solutions",
+    "failures",
+    "partial_wins",
+    "desires",
+    "fears",
+    "objections_or_skepticism",
+    "sophistication_markers",
+    "awareness_guess",
+    "conversation_dynamic",
+    "best_quotes",
+    "contradictions",
+    "dr_takeaways",
+    "evidence_refs"
+  ],
+  "properties": {
+    "thread_id": {"type": "string"},
+    "title": {"type": "string"},
+    "subreddit": {"type": "string"},
+    "thread_strength": {"type": "string", "enum": ["high", "medium", "low"]},
+    "why_this_thread_matters": {"type": "string"},
+    "primary_states": {"type": "array", "items": {"type": "string"}},
+    "trigger_moments": {"type": "array", "items": {"type": "string"}},
+    "what_makes_it_worse": {"type": "array", "items": {"type": "string"}},
+    "mechanism_beliefs": {"type": "array", "items": {"type": "string"}},
+    "tried_solutions": {"type": "array", "items": {"type": "string"}},
+    "failures": {"type": "array", "items": {"type": "string"}},
+    "partial_wins": {"type": "array", "items": {"type": "string"}},
+    "desires": {"type": "array", "items": {"type": "string"}},
+    "fears": {"type": "array", "items": {"type": "string"}},
+    "objections_or_skepticism": {"type": "array", "items": {"type": "string"}},
+    "sophistication_markers": {"type": "array", "items": {"type": "string"}},
+    "awareness_guess": {
+      "type": "string",
+      "enum": ["unaware", "problem-aware", "solution-aware", "product-aware", "most-aware", "unknown"]
+    },
+    "conversation_dynamic": {"type": "string"},
+    "best_quotes": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["quote", "why_it_matters"],
+        "properties": {
+          "quote": {"type": "string"},
+          "comment_id": {"type": ["string", "null"]},
+          "why_it_matters": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "contradictions": {"type": "array", "items": {"type": "string"}},
+    "dr_takeaways": {"type": "array", "items": {"type": "string"}},
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["thread_id", "submission_id"],
+        "properties": {
+          "thread_id": {"type": "string"},
+          "submission_id": {"type": "string"},
+          "comment_id": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

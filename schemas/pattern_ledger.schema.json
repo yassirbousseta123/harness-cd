@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PatternLedger",
+  "type": "object",
+  "required": ["avatar_id", "updated_at", "coverage", "patterns"],
+  "properties": {
+    "avatar_id": {"type": "string"},
+    "updated_at": {"type": "string"},
+    "version": {"type": "integer"},
+    "coverage": {
+      "type": "object",
+      "required": ["processed_priority_threads", "remaining_priority_threads"],
+      "properties": {
+        "processed_priority_threads": {"type": "integer"},
+        "remaining_priority_threads": {"type": "integer"},
+        "subreddits": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "patterns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "class",
+          "label",
+          "description",
+          "support_count",
+          "supporting_thread_ids",
+          "strongest_quotes",
+          "confidence",
+          "contradiction_notes",
+          "dr_significance"
+        ],
+        "properties": {
+          "class": {
+            "type": "string",
+            "enum": [
+              "pain_points",
+              "day_to_day_struggles",
+              "trigger_moments",
+              "failed_fixes",
+              "partial_wins",
+              "mechanism_beliefs",
+              "objections",
+              "desires",
+              "awareness_markers",
+              "sophistication_markers",
+              "identity_stakes",
+              "proof_demands"
+            ]
+          },
+          "label": {"type": "string"},
+          "description": {"type": "string"},
+          "support_count": {"type": "integer"},
+          "supporting_thread_ids": {"type": "array", "items": {"type": "string"}},
+          "strongest_quotes": {"type": "array", "items": {"type": "string"}},
+          "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+          "contradiction_notes": {"type": "array", "items": {"type": "string"}},
+          "dr_significance": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
